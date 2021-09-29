@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:valorant_companion/screens/all_agents.dart';
+import 'package:valorant_companion/screens/landing_screen.dart';
 import 'package:valorant_companion/utils/color.dart';
 
 void main() {
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: colorCustom,
         brightness: Brightness.dark
       ),
-      home: const AllAgents(),
+      home: const LandingScreen(),
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:valorant_companion/models/agent_list_item.dart';
-import 'package:valorant_companion/screens/agent_details.dart';
+import 'package:valorant_companion/models/agents/agent_list_item.dart';
+import 'package:valorant_companion/screens/agents/agent_details.dart';
 import 'package:valorant_companion/utils/api_handler.dart';
 
 class AllAgents extends StatefulWidget {

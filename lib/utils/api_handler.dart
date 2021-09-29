@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:valorant_companion/models/agent_data.dart';
-import 'package:valorant_companion/models/agent_list_item.dart';
+import 'package:valorant_companion/models/agents/agent_data.dart';
+import 'package:valorant_companion/models/agents/agent_list_item.dart';
+import 'package:valorant_companion/models/weapons/weapon_list_item.dart';
 
 class APIHandler{
 
@@ -36,6 +37,7 @@ class APIHandler{
     var response = await http.get(uri);
     var json = jsonDecode(response.body);  
 
+    var data = await json["data"];
     var abilities = await json["data"]["abilities"];
 
     List<AbilityData> allAbilities = [];
@@ -51,15 +53,37 @@ class APIHandler{
     }
 
     AgentData agent = AgentData(
-      name: json["data"]['displayName'], 
-      description: json["data"]['description'], 
-      image: json["data"]['bustPortrait'], 
-      role: json["data"]['role']['displayName'], 
-      roleDescription: json["data"]['role']['description'], 
-      roleIcon: json["data"]['role']['displayIcon'], 
+      name: data['displayName'], 
+      description: data['description'], 
+      image: data['bustPortrait'], 
+      role: data['role']['displayName'], 
+      roleDescription: data['role']['description'], 
+      roleIcon: data['role']['displayIcon'], 
       abilities: allAbilities
     );
 
     return agent;
+  }
+
+  getAllWeapons() async{
+    var uri = Uri.https("valorant-api.com", "v1/weapons");
+    var response = await http.get(uri);
+    var json = jsonDecode(response.body); 
+
+    var data = await json["data"];
+
+    List<WeapontListItem> weapons = [];
+
+    for(int i = 0; i < data.length; i++){
+      WeapontListItem weapon = WeapontListItem(
+        name: data[i]["displayName"], 
+        icon: data[i]["displayIcon"], 
+        id: data[i]["uuid"]
+      );
+
+      weapons.add(weapon);
+    }
+
+    return weapons;
   }
 }
