@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:valorant_companion/screens/all_agents.dart';
+import 'package:valorant_companion/utils/color.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: colorCustom,
+        brightness: Brightness.dark
       ),
       home: const AllAgents(),
     );

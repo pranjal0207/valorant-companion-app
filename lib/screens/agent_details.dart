@@ -19,6 +19,8 @@ class _AgentDetailsState extends State<AgentDetails> {
 
   bool loading = true;
 
+  int selectedAbility = 0;
+
   void getAgentData() async{
     var temp = await apiHandler.getAgentData(widget.id);
 
@@ -28,6 +30,43 @@ class _AgentDetailsState extends State<AgentDetails> {
     });
   }
 
+  showRoleData() {
+    showDialog(
+      context: context, 
+      builder: (context){
+        return AlertDialog(
+          backgroundColor: const Color(0XFF1a1a1a),
+          title: Row(
+            children: [
+              Image.network(
+                agent.roleIcon,
+                height: 20,
+              ),
+
+              const SizedBox(
+                width: 10,
+              ),
+
+              Text(
+                agent.role,
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+
+          content: Text(
+            agent.roleDescription,
+            style: const TextStyle(
+              color: Colors.white
+            ),
+          ),
+        );
+      }
+    );
+  } 
+
   @override
   void initState() {
     super.initState();
@@ -36,8 +75,9 @@ class _AgentDetailsState extends State<AgentDetails> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.black54,
+      //backgroundColor: Colors.black54,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -71,10 +111,13 @@ class _AgentDetailsState extends State<AgentDetails> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Image.network(
-                            agent.image,
-                            height: 150,
-                            scale: 1,
+                          Container(
+                            margin: const EdgeInsets.only(left: 15),
+                            child: Image.network(
+                              agent.image,
+                              height: 150,
+                              scale: 1,
+                            ),
                           ),
 
                           Column(
@@ -94,28 +137,33 @@ class _AgentDetailsState extends State<AgentDetails> {
                                 height: 15,
                               ),
 
-                              Container(
-                                margin: const EdgeInsets.only(left : 15),
-                                child: Row(
-                                  children: <Widget>[
-                                    Image.network(
-                                      agent.roleIcon,
-                                      height: 20,
-                                      width: 20,
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-
-                                    Text(
-                                      agent.role,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20
+                              GestureDetector(
+                                onTap: (){
+                                  showRoleData();
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(left : 15),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Image.network(
+                                        agent.roleIcon,
+                                        height: 20,
+                                        width: 20,
                                       ),
-                                    ),
-                                  ],
+
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+
+                                      Text(
+                                        agent.role,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                 )
                               )
                             ],
@@ -132,7 +180,130 @@ class _AgentDetailsState extends State<AgentDetails> {
                             fontSize: 16,
                           ),
                         ),
-                      )
+                      ),
+
+                      const SizedBox(
+                        height: 20,
+                      ),
+
+                      Container(
+                        margin: const EdgeInsets.only(left: 10, right: 10),
+                        child: Row(
+                          mainAxisAlignment : MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            TextButton(
+                              onPressed: (){
+                                setState(() {
+                                  selectedAbility = 0;
+                                });
+                              },
+                              child: const Text(
+                                "Q",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              style: TextButton.styleFrom(
+                                fixedSize: Size(((width - 20 - 15)/4), 20),
+                                backgroundColor: (selectedAbility == 0)? Colors.grey: null
+                              ),
+                            ),
+
+                            TextButton(
+                              onPressed: (){
+                                setState(() {
+                                  selectedAbility = 1;
+                                });
+                              },
+                              child: const Text(
+                                "E",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              style: TextButton.styleFrom(
+                                fixedSize: Size(((width - 20 - 15)/4), 20),
+                                backgroundColor: (selectedAbility == 1)? Colors.grey: null,
+                              ),
+                            ),
+
+                            TextButton(
+                              onPressed: (){
+                                setState(() {
+                                  selectedAbility = 2;
+                                });
+                              },
+                              child: const Text(
+                                "C",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              style: TextButton.styleFrom(
+                                fixedSize: Size(((width - 20 - 15)/4), 20),
+                                backgroundColor: (selectedAbility == 2)? Colors.grey: null
+                              ),
+                            ),
+
+                            TextButton(
+                              onPressed: (){
+                                setState(() {
+                                  selectedAbility = 3;
+                                });
+                              },
+                              child: const Text(
+                                "X",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              style: TextButton.styleFrom(
+                                fixedSize: Size(((width - 20 - 15)/4), 20),
+                                backgroundColor: (selectedAbility == 3)? Colors.grey : null
+                              ),
+                            ),
+                          ],
+                        )
+                      ),
+
+                      Container(
+                        margin: const EdgeInsets.only(left : 15, right: 15, top: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Image.network(
+                              agent.abilities[selectedAbility].icon,
+                              width: 40
+                            ),
+
+                            Container(
+                              width: width - 100,
+                              child: Text(
+                                agent.abilities[selectedAbility].name,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            )                            
+                          ],
+                        )
+                      ),
+
+                      Container(
+                        margin: const EdgeInsets.only(left : 15, right: 15, top: 20),
+                        child: Text(
+                          agent.abilities[selectedAbility].description,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
                     ],
                   )
               )

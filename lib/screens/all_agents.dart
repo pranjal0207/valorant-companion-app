@@ -32,7 +32,7 @@ class _AllAgentsState extends State<AllAgents> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black54,
+      //backgroundColor: Colors.black54,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -50,7 +50,6 @@ class _AllAgentsState extends State<AllAgents> {
                   itemBuilder: (context, index){
                     return GestureDetector(
                       onTap: (){
-                        print(agents[index].name + " pressed \n" + agents[index].id);
                         String id = agents[index].id;
                         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AgentDetails(id: id)));
                       },
