@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:valorant_companion/models/agents/agent_data.dart';
 import 'package:valorant_companion/models/agents/agent_list_item.dart';
+import 'package:valorant_companion/models/weapons/weapon_data.dart';
 import 'package:valorant_companion/models/weapons/weapon_list_item.dart';
 
 class APIHandler{
@@ -85,5 +86,48 @@ class APIHandler{
     }
 
     return weapons;
+  }
+
+  getWeaponData(String id) async{
+    var uri = Uri.https("valorant-api.com", "v1/weapons/$id");
+    var response = await http.get(uri);
+    var json = jsonDecode(response.body);  
+
+    var data = await json["data"];
+    var shopInfo = await json["data"]["shopData"];
+    var stats = await json["data"]["weaponStats"];
+    var ads = await json["data"]["weaponStats"]["adsStats"];
+    var ranges = await json["data"]["weaponStats"]["damageRanges"];
+
+    List<DamageRange> damageRanges = [];
+ 
+    for (int i = 0; i < ranges.length; i++){
+      DamageRange range = DamageRange(
+        rangeStarts: ranges[i]["rangeStartMeters"], 
+        rangeEnds: ranges[i]["rangeEndMeters"], 
+        bodyDamage: double.parse(ranges[i]["bodyDamage"].toString()), 
+        headDamage: double.parse(ranges[i]["headDamage"].toString()), 
+        legDamage: double.parse(ranges[i]["legDamage"].toString())
+      );
+
+      damageRanges.add(range);
+    }
+
+    WeaponData weapon = WeaponData(
+      name: data["displayName"], 
+      icon: data["displayIcon"], 
+      cost: shopInfo["cost"], 
+      category: shopInfo["category"],
+      fireRate: double.parse(stats["fireRate"].toString()), 
+      equipSpeed: double.parse(stats["equipTimeSeconds"].toString()), 
+      firstShotSpreadADS: (ads != null)? double.parse(ads["firstBulletAccuracy"].toString()): 0, 
+      firstShotSpreadHIP: double.parse(stats["firstBulletAccuracy"].toString()), 
+      magazine: double.parse(stats["magazineSize"].toString()), 
+      reloadSpeed: double.parse(stats["reloadTimeSeconds"].toString()), 
+      runSpeed: double.parse(stats["runSpeedMultiplier"].toString()),
+      damageRanges: damageRanges
+    );
+
+    return weapon;
   }
 }
