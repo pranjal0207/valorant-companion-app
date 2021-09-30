@@ -159,7 +159,7 @@ class _WeaponDetailsState extends State<WeaponDetails> {
 
                             StatBox(
                               title: "RUN SPEED", 
-                              data: weapon.runSpeed.toString(), 
+                              data: (weapon.runSpeed * 6.75).toStringAsFixed(2), 
                               unit: "M/SEC"
                             )
                           ],
@@ -337,9 +337,70 @@ class _WeaponDetailsState extends State<WeaponDetails> {
                         height: 50,
                       ),
 
+                      if(weapon.adsStats.ads)
                       Container(
-                        child: const Text("alt fire"),
-                      )
+                        margin: const EdgeInsets.only(left : 20, right: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "ADS Statistics",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold
+                              )
+                            ),
+
+                            const SizedBox(
+                              height: 20
+                            ),
+
+                            Text(
+                              "\t\t1.\t\t\tZoom : " + weapon.adsStats.zoom.toStringAsFixed(1) + "x",
+                              style: const TextStyle(
+                                fontSize: 16,
+                              )
+                            ),
+
+                            const SizedBox(
+                              height: 10
+                            ),
+
+                            Text(
+                              "\t\t2.\t\t\tFire Rate : " + weapon.fireRate.toStringAsFixed(1) + " rounds/sec",
+                              style: const TextStyle(
+                                fontSize: 16,
+                              )
+                            ),
+
+                            const SizedBox(
+                              height: 10
+                            ),
+
+                            Text(
+                              "\t\t3.\t\t\tMove Speed : " + (weapon.adsStats.runSpeedMultiplier * weapon.runSpeed * 6.75).toStringAsFixed(2)  + "m/sec",
+                              style: const TextStyle(
+                                fontSize: 16,
+                              )
+                            ),
+
+                            const SizedBox(
+                              height: 10
+                            ),
+
+                            Text(
+                              "\t\t4.\t\t\tBurst Count : " + weapon.adsStats.burstCount.toString() + " bullet(s)",
+                              style: const TextStyle(
+                                fontSize: 16,
+                              )
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(
+                        height: 40
+                      ),
                     ],
                   )
               )

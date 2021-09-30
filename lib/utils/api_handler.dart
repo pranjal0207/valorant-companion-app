@@ -113,6 +113,15 @@ class APIHandler{
       damageRanges.add(range);
     }
 
+
+    ADSStats adsStats = ADSStats(
+      ads: (ads != null)? true : false,
+      zoom: (ads != null)? double.parse(ads["zoomMultiplier"].toString()): 0, 
+      fireRate: (ads != null)? double.parse(ads["fireRate"].toString()): 0, 
+      runSpeedMultiplier: (ads != null)? double.parse(ads["runSpeedMultiplier"].toString()): 0,
+      burstCount: (ads != null)? ads["burstCount"]: 0
+    );
+
     WeaponData weapon = WeaponData(
       name: data["displayName"], 
       icon: data["displayIcon"], 
@@ -125,7 +134,8 @@ class APIHandler{
       magazine: double.parse(stats["magazineSize"].toString()), 
       reloadSpeed: double.parse(stats["reloadTimeSeconds"].toString()), 
       runSpeed: double.parse(stats["runSpeedMultiplier"].toString()),
-      damageRanges: damageRanges
+      damageRanges: damageRanges,
+      adsStats: adsStats
     );
 
     return weapon;

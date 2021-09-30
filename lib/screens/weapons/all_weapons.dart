@@ -75,6 +75,7 @@ class _AllWeaponsState extends State<AllWeapons> {
                               ),
                             ),
 
+                            if(weapons[index].id != "2f59173c-4bed-b6c3-2191-dea9b58be9c7")
                             IconButton(
                               onPressed: () {
                                 String id = weapons[index].id;
