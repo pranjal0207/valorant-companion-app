@@ -32,7 +32,6 @@ class _AllAgentsState extends State<AllAgents> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: Colors.black54,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

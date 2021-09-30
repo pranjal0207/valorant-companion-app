@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:valorant_companion/models/agents/agent_data.dart';
 import 'package:valorant_companion/models/agents/agent_list_item.dart';
+import 'package:valorant_companion/models/maps/map_list_item.dart';
 import 'package:valorant_companion/models/weapons/weapon_data.dart';
 import 'package:valorant_companion/models/weapons/weapon_list_item.dart';
 
@@ -139,5 +140,32 @@ class APIHandler{
     );
 
     return weapon;
+  }
+
+  getAllMaps() async{
+    var uri = Uri.https("valorant-api.com", "v1/maps");
+    var response = await http.get(uri);
+    var json = jsonDecode(response.body);
+
+    var data = await json["data"];
+
+    List<MapListItem> maps = [];
+
+    for(int i = 0; i < data.length; i++){
+      if(data[i]["uuid"] == "ee613ee9-28b7-4beb-9666-08db13bb2244"){
+        continue;
+      }
+
+      MapListItem map = MapListItem(
+        id: data[i]["uuid"], 
+        name: data[i]["displayName"], 
+        icon: data[i]["splash"],
+        coordinates: data[i]["coordinates"]
+      );
+
+      maps.add(map);
+    }
+
+    return maps;
   }
 }

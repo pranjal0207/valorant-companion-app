@@ -77,7 +77,6 @@ class _AgentDetailsState extends State<AgentDetails> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      //backgroundColor: Colors.black54,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

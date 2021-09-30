@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:valorant_companion/screens/agents/all_agents.dart';
+import 'package:valorant_companion/screens/maps/all_maps.dart';
 import 'package:valorant_companion/screens/weapons/all_weapons.dart';
 
 class LandingScreen extends StatefulWidget {
@@ -15,7 +16,7 @@ class _LandingScreenState extends State<LandingScreen> {
   List<Widget> screens = <Widget>[
     const AllAgents(),
     const AllWeapons(),
-    const Text("MAPS")
+    const AllMaps()
   ];
 
   void onItemTap(int index){
