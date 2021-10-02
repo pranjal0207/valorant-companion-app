@@ -37,9 +37,26 @@ class _AllWeaponsState extends State<AllWeapons> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const SizedBox(
                 height: 20,
+              ),
+
+              Container(
+                margin: const EdgeInsets.only(left : 25, right: 20),
+                child : const Text(
+                  "ARSENAL",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 35,
+                    fontFamily: 'Valorant'
+                  ),
+                )
+              ),
+
+              const SizedBox(
+                height: 10,
               ),
 
               Container(
@@ -51,7 +68,8 @@ class _AllWeaponsState extends State<AllWeapons> {
                   itemBuilder: (context, index){
                     return GestureDetector(
                       onTap: (){
-                        //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AgentDetails(id: id)));
+                        String id = weapons[index].id;
+                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => WeaponDetails(id: id)));
                       },
                       child: Container(
                         height: 100,
@@ -72,7 +90,8 @@ class _AllWeaponsState extends State<AllWeapons> {
                                 weapons[index].name,
                                 style: const TextStyle(
                                   color: Colors.white,
-                                  fontSize: 20
+                                  fontSize: 20,
+                                  fontFamily: 'Valorant'
                                 ),
                               ),
                             ),

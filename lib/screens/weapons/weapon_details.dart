@@ -97,7 +97,8 @@ class _WeaponDetailsState extends State<WeaponDetails> {
                                         weapon.name,
                                         style: const TextStyle(
                                           fontSize: 20,
-                                          color: Colors.white
+                                          color: Colors.white,
+                                          fontFamily: 'Valorant'
                                         ),
                                       ),
 

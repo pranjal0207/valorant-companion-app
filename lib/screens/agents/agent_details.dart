@@ -52,6 +52,7 @@ class _AgentDetailsState extends State<AgentDetails> {
                 agent.role,
                 style: const TextStyle(
                   color: Colors.white,
+                  fontFamily: 'Valorant'
                 ),
               ),
             ],
@@ -130,7 +131,8 @@ class _AgentDetailsState extends State<AgentDetails> {
                                   agent.name,
                                   style: const TextStyle(
                                     color: Colors.white,
-                                    fontSize: 40
+                                    fontSize: 40,
+                                    fontFamily: 'Valorant'
                                   ),
                                 ),
                               ),
@@ -144,7 +146,7 @@ class _AgentDetailsState extends State<AgentDetails> {
                                   showRoleData();
                                 },
                                 child: Container(
-                                  margin: const EdgeInsets.only(left : 15),
+                                  margin: const EdgeInsets.only(left : 10),
                                   child: Row(
                                     children: <Widget>[
                                       Image.network(
@@ -161,7 +163,8 @@ class _AgentDetailsState extends State<AgentDetails> {
                                         agent.role,
                                         style: const TextStyle(
                                           color: Colors.white,
-                                          fontSize: 20
+                                          fontSize: 20,
+                                          fontFamily: 'Valorant'
                                         ),
                                       ),
                                     ],
@@ -179,7 +182,7 @@ class _AgentDetailsState extends State<AgentDetails> {
                           agent.description,
                           style: const TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 18,
                           ),
                         ),
                       ),
@@ -204,6 +207,7 @@ class _AgentDetailsState extends State<AgentDetails> {
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
+                                  fontFamily: 'Valorant'
                                 ),
                               ),
                               style: TextButton.styleFrom(
@@ -223,6 +227,7 @@ class _AgentDetailsState extends State<AgentDetails> {
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
+                                  fontFamily: 'Valorant'
                                 ),
                               ),
                               style: TextButton.styleFrom(
@@ -242,6 +247,7 @@ class _AgentDetailsState extends State<AgentDetails> {
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
+                                  fontFamily: 'Valorant'
                                 ),
                               ),
                               style: TextButton.styleFrom(
@@ -261,6 +267,7 @@ class _AgentDetailsState extends State<AgentDetails> {
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
+                                  fontFamily: 'Valorant'
                                 ),
                               ),
                               style: TextButton.styleFrom(
@@ -288,7 +295,8 @@ class _AgentDetailsState extends State<AgentDetails> {
                                 agent.abilities[selectedAbility].name,
                                 style: const TextStyle(
                                   color: Colors.white,
-                                  fontSize: 18,
+                                  fontSize: 20,
+                                  fontFamily: 'Valorant'
                                 ),
                               ),
                             )                            
@@ -302,7 +310,7 @@ class _AgentDetailsState extends State<AgentDetails> {
                           agent.abilities[selectedAbility].description,
                           style: const TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 18,
                           ),
                         ),
                       ),

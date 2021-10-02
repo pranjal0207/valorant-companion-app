@@ -53,6 +53,12 @@ class _LandingScreenState extends State<LandingScreen> {
         backgroundColor: Colors.grey,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white54,
+        selectedLabelStyle: const TextStyle(
+          fontFamily: 'Valorant'
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontFamily: 'Valorant'
+        ),
       ),
     );
   }

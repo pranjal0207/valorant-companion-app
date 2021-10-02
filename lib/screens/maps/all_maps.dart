@@ -37,9 +37,26 @@ class _AllMapsState extends State<AllMaps> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const SizedBox(
                 height: 20,
+              ),
+
+              Container(
+                margin: const EdgeInsets.only(left : 25, right: 20),
+                child : const Text(
+                  "MAPS",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 35,
+                    fontFamily: 'Valorant'
+                  ),
+                )
+              ),
+
+              const SizedBox(
+                height: 10,
               ),
 
               Container(
@@ -52,7 +69,6 @@ class _AllMapsState extends State<AllMaps> {
                     return GestureDetector(
                       onTap: (){
                         String id = maps[index].id;
-                        print(id);
                         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => MapDetails(id: id)));
                       },
                       child: Container(
@@ -78,7 +94,8 @@ class _AllMapsState extends State<AllMaps> {
                                     maps[index].name,
                                     style: const TextStyle(
                                       color: Colors.white,
-                                      fontSize: 20
+                                      fontSize: 20,
+                                      fontFamily: 'Valorant'
                                     ),
                                   ),
 
@@ -90,7 +107,8 @@ class _AllMapsState extends State<AllMaps> {
                                     maps[index].coordinates,
                                     style: const TextStyle(
                                       color: Colors.white,
-                                      fontSize: 15
+                                      fontSize: 15,
+                                      fontFamily: 'Valorant'
                                     ),
                                   ),
                                 ],

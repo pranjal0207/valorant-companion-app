@@ -37,9 +37,26 @@ class _AllAgentsState extends State<AllAgents> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const SizedBox(
                 height: 20,
+              ),
+
+              Container(
+                margin: const EdgeInsets.only(left : 25, right: 20),
+                child : const Text(
+                  "AGENTS",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 35,
+                    fontFamily: 'Valorant'
+                  ),
+                )
+              ),
+
+              const SizedBox(
+                height: 10,
               ),
 
               Container(
@@ -73,7 +90,8 @@ class _AllAgentsState extends State<AllAgents> {
                                 agents[index].name,
                                 style: const TextStyle(
                                   color: Colors.white,
-                                  fontSize: 20
+                                  fontSize: 20,
+                                  fontFamily: 'Valorant'
                                 ),
                               ),
                             ),
