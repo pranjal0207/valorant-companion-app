@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:valorant_companion/models/weapons/weapon_data.dart';
 import 'package:valorant_companion/utils/api_handler.dart';
 
@@ -33,6 +34,7 @@ class _WeaponDetailsState extends State<WeaponDetails> {
 
   @override
   void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.initState();
     getWeaponData();
   }

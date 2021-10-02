@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:valorant_companion/models/maps/map_list_item.dart';
+import 'package:valorant_companion/screens/maps/map_details.dart';
 import 'package:valorant_companion/utils/api_handler.dart';
 
 class AllMaps extends StatefulWidget {
@@ -24,6 +26,7 @@ class _AllMapsState extends State<AllMaps> {
 
   @override
   void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.initState();
     getMaps();
   }
@@ -49,7 +52,8 @@ class _AllMapsState extends State<AllMaps> {
                     return GestureDetector(
                       onTap: (){
                         String id = maps[index].id;
-                        //Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AgentDetails(id: id)));
+                        print(id);
+                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => MapDetails(id: id)));
                       },
                       child: Container(
                         height: 120,
