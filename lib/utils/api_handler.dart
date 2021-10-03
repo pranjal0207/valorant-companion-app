@@ -42,10 +42,15 @@ class APIHandler{
 
     var data = await json["data"];
     var abilities = await json["data"]["abilities"];
+    var voice = await json["data"]["voiceLine"];
 
     List<AbilityData> allAbilities = [];
+    List<AgentVoice> agentVoices = [];
 
     for(int i = 0; i < abilities.length; i++){
+      if(i == 4){
+        continue;
+      }
       AbilityData ability = AbilityData(
         name: abilities[i]['displayName'], 
         description: abilities[i]['description'], 
@@ -55,6 +60,15 @@ class APIHandler{
       allAbilities.add(ability);
     }
 
+    for(int i = 0; i < voice["mediaList"].length; i++){
+      AgentVoice agentVoice = AgentVoice(
+        duration: voice["maxDuration"], 
+        audio: voice["mediaList"][0]["wave"]
+      );
+
+      agentVoices.add(agentVoice);
+    }
+
     AgentData agent = AgentData(
       name: data['displayName'], 
       description: data['description'], 
@@ -62,7 +76,8 @@ class APIHandler{
       role: data['role']['displayName'], 
       roleDescription: data['role']['description'], 
       roleIcon: data['role']['displayIcon'], 
-      abilities: allAbilities
+      abilities: allAbilities,
+      voice: agentVoices
     );
 
     return agent;

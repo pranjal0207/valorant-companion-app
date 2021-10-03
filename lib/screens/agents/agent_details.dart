@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:valorant_companion/models/agents/agent_data.dart';
@@ -15,12 +16,16 @@ class AgentDetails extends StatefulWidget {
 }
 
 class _AgentDetailsState extends State<AgentDetails> {
+  AudioPlayer audioPlayer = AudioPlayer();
   final apiHandler = APIHandler();
+
   late AgentData agent;
 
   bool loading = true;
 
   int selectedAbility = 0;
+
+  bool isPlaying = false;
 
   void getAgentData() async{
     var temp = await apiHandler.getAgentData(widget.id);
@@ -29,6 +34,9 @@ class _AgentDetailsState extends State<AgentDetails> {
       agent = temp;
       loading = false;
     });
+
+    await audioPlayer.setUrl(agent.voice[0].audio); // prepare the player with this audio but do not start playing
+    await audioPlayer.setReleaseMode(ReleaseMode.STOP); 
   }
 
   showRoleData() {
@@ -71,7 +79,6 @@ class _AgentDetailsState extends State<AgentDetails> {
 
   @override
   void initState() {
-    
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.initState();
     getAgentData();
@@ -124,6 +131,7 @@ class _AgentDetailsState extends State<AgentDetails> {
                           ),
 
                           Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
                                 margin: const EdgeInsets.only(left: 20),
@@ -146,7 +154,7 @@ class _AgentDetailsState extends State<AgentDetails> {
                                   showRoleData();
                                 },
                                 child: Container(
-                                  margin: const EdgeInsets.only(left : 10),
+                                  margin: const EdgeInsets.only(left : 20),
                                   child: Row(
                                     children: <Widget>[
                                       Image.network(
@@ -299,7 +307,7 @@ class _AgentDetailsState extends State<AgentDetails> {
                                   fontFamily: 'Valorant'
                                 ),
                               ),
-                            )                            
+                            )
                           ],
                         )
                       ),
@@ -314,6 +322,46 @@ class _AgentDetailsState extends State<AgentDetails> {
                           ),
                         ),
                       ),
+
+                      Container(
+                        margin: const EdgeInsets.only(left : 15, right: 15, top: 40),
+                        child: Row(
+                          children: <Widget>[
+                            const Text(
+                              "AGENT VOICE LINE : ",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontFamily: 'Valorant'
+                              ),
+                            ),
+
+                            const SizedBox(
+                              width: 20,
+                            ),
+
+                            IconButton(
+                              onPressed: () async{
+                                bool temp = !isPlaying;
+
+                                if(isPlaying){
+                                  await audioPlayer.pause();
+                                }
+                                else{
+                                  await audioPlayer.resume();
+                                }
+
+                                setState(() {
+                                  isPlaying = temp;
+                                });
+                              }, 
+                              icon: (isPlaying)? const Icon(Icons.pause_circle_filled_rounded) : const Icon(Icons.play_circle_filled_rounded),
+                              padding: EdgeInsets.zero,
+                              iconSize: 20,
+                            ),
+                          ],
+                        )
+                      )
                     ],
                   )
               )

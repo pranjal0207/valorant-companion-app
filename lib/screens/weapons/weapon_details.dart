@@ -41,6 +41,8 @@ class _WeaponDetailsState extends State<WeaponDetails> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -398,6 +400,28 @@ class _WeaponDetailsState extends State<WeaponDetails> {
                               )
                             ),
                           ],
+                        ),
+                      ),
+
+                      const SizedBox(
+                        height: 30
+                      ),
+
+                      Container(
+                        margin : const EdgeInsets.only(left : 20, right : 20),
+                        child : ElevatedButton(
+                          onPressed: (){}, 
+                          child: const Text(
+                            "View Weapon Skins",
+                            style: TextStyle(
+                              fontFamily: 'Valorant',
+                              fontSize: 17
+                            )
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: Size(width - 40, 45),
+                            primary: const Color(0xff3700b3)
+                          )
                         ),
                       ),
 
