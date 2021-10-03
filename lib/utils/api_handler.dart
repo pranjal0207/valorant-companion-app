@@ -6,6 +6,7 @@ import 'package:valorant_companion/models/maps/map_data.dart';
 import 'package:valorant_companion/models/maps/map_list_item.dart';
 import 'package:valorant_companion/models/weapons/weapon_data.dart';
 import 'package:valorant_companion/models/weapons/weapon_list_item.dart';
+import 'package:valorant_companion/models/weapons/weapon_skins.dart';
 
 class APIHandler{
   getAllAgentsData() async{
@@ -196,5 +197,52 @@ class APIHandler{
     );
 
     return map;
+  }
+
+  getWeaponSkins(String id) async{
+    var uri = Uri.https("valorant-api.com", "v1/weapons/$id");
+    var response = await http.get(uri);
+    var json = jsonDecode(response.body);  
+
+    var skins = await json["data"]["skins"];
+
+    List<WeaponSkins> weaponSkins = [];
+
+    for (int i = 0; i < skins.length; i++){
+      WeaponSkins weaponSkin = WeaponSkins(
+        id: skins[i]["uuid"], 
+        name: skins[i]["displayName"], 
+        displayImage: skins[i]["chromas"][0]["fullRender"],
+        variants: skins[i]["chromas"].length
+      );
+
+      weaponSkins.add(weaponSkin);
+    }
+
+    return weaponSkins;
+  }
+
+  getWeaponVariants(String id) async{
+    var uri = Uri.https("valorant-api.com", "v1/weapons/skins/$id");
+    var response = await http.get(uri);
+    var json = jsonDecode(response.body);  
+
+    var variants = json["data"]["chromas"];
+
+    List<WeaponVariants> weaponVariants = [];
+
+    for (int i = 0; i < variants.length; i++){
+      WeaponVariants variant = WeaponVariants(
+        id: variants[i]["uuid"], 
+        displayName: variants[i]["displayName"],
+        swatch: variants[i]["swatch"], 
+        image: variants[i]["fullRender"],
+        video: (variants[i]["streamedVideo"] == null)? "" : variants[i]["streamedVideo"] 
+      );
+
+      weaponVariants.add(variant);
+    }
+
+    return weaponVariants;
   }
 }

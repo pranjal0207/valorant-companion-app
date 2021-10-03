@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:valorant_companion/models/weapons/weapon_data.dart';
+import 'package:valorant_companion/models/weapons/weapon_skins.dart';
 import 'package:valorant_companion/utils/api_handler.dart';
 
 class WeaponDetails extends StatefulWidget {
@@ -17,9 +18,12 @@ class WeaponDetails extends StatefulWidget {
 
 class _WeaponDetailsState extends State<WeaponDetails> {
   final apiHandler = APIHandler();
+  
   late WeaponData weapon;
+  late List<WeaponSkins> skins;
 
   bool loading = true;
+  bool skinLoading = true;
 
   int selectedAbility = 0;
 
@@ -32,17 +36,25 @@ class _WeaponDetailsState extends State<WeaponDetails> {
     });
   }
 
+  getSkinData() async{
+    var temp = await apiHandler.getWeaponSkins(widget.id);
+
+    setState(() {
+      skins = temp;
+      skinLoading = false;
+    });
+  }
+
   @override
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.initState();
     getWeaponData();
+    getSkinData();
   }
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -119,7 +131,7 @@ class _WeaponDetailsState extends State<WeaponDetails> {
                                   ),
 
                                   Text(
-                                    "Cost : " + weapon.cost.toString(),
+                                    "Cost : " + weapon.cost.toString() + " credits",
                                     style: const TextStyle(
                                       fontSize: 16,
                                       color: Colors.white
@@ -404,24 +416,56 @@ class _WeaponDetailsState extends State<WeaponDetails> {
                       ),
 
                       const SizedBox(
-                        height: 30
+                        height: 20
                       ),
 
                       Container(
+                        margin : const EdgeInsets.only(left : 15, right : 15),
+                        child : const Divider(
+                          thickness: 2,
+                          color: Colors.white
+                        ),
+                      ),
+
+                      const SizedBox(
+                        height: 20
+                      ),
+
+                      if(!skinLoading)
+                      Container(
                         margin : const EdgeInsets.only(left : 20, right : 20),
-                        child : ElevatedButton(
-                          onPressed: (){}, 
-                          child: const Text(
-                            "View Weapon Skins",
-                            style: TextStyle(
-                              fontFamily: 'Valorant',
-                              fontSize: 17
-                            )
+                        child : Text(
+                          "WEAPON SKINS (" + (skins.length).toString() + ")",
+                          style: const TextStyle(
+                            fontSize: 25,
+                            fontFamily: 'Valorant'
                           ),
-                          style: ElevatedButton.styleFrom(
-                            fixedSize: Size(width - 40, 45),
-                            primary: const Color(0xff3700b3)
-                          )
+                        )
+                      ),
+
+                      const SizedBox(
+                        height: 20
+                      ),
+
+                      if(!skinLoading)
+                      for (int i = 0; i < skins.length; i = i + 2)
+                      Container(
+                        margin : const EdgeInsets.only(left : 20, right : 20, bottom: 20),
+                        child : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            for (int j = i; j < i+2 && j < skins.length; j++)
+                            GestureDetector(
+                              onTap: (){
+                                if(skins[j].variants > 1){
+                                  print(skins[j].id);
+                                }
+                              },
+                              child : SkinInfoBox(
+                                skin: skins[j]
+                              )
+                            )
+                          ],
                         ),
                       ),
 
@@ -497,5 +541,55 @@ class StatBox extends StatelessWidget {
         ]
       ),
     );
+  }
+}
+
+class SkinInfoBox extends StatelessWidget {
+  final WeaponSkins skin;
+  const SkinInfoBox({ 
+    required this.skin,
+    Key? key 
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
+    return Container(
+        padding: const EdgeInsets.only(top : 20, bottom : 20, left : 10, right : 10),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.white)
+        ),
+        height: 182,
+        width: (width - 50)/2,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Text(
+              skin.name,
+              style: const TextStyle(
+                fontFamily: 'Valorant'
+              )
+            ),
+
+            const SizedBox(
+              height: 20,
+            ),
+
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Image.network(
+                    skin.displayImage,
+                    height: 60
+                  ),
+                ],
+              )
+            )
+            
+          ],
+        ),
+      );
   }
 }
