@@ -459,8 +459,22 @@ class _WeaponDetailsState extends State<WeaponDetails> {
                             GestureDetector(
                               onTap: (){
                                 if(skins[j].variants > 1){
-                                  print(skins[j].id);
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => SkinVariants(id: skins[j].id, name: skins[j].name)));
+                                }
+
+                                else{
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        "This Skin has only one variant",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        )
+                                      ),
+                                      behavior: SnackBarBehavior.floating,
+                                      backgroundColor: Colors.grey
+                                    )
+                                  );
                                 }
                               },
                               child : SkinInfoBox(

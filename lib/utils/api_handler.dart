@@ -227,9 +227,21 @@ class APIHandler{
     var response = await http.get(uri);
     var json = jsonDecode(response.body);  
 
-    var variants = json["data"]["chromas"];
+    var variants = await json["data"]["chromas"];
+    var levels = await json["data"]["levels"];
 
     List<WeaponVariants> weaponVariants = [];
+    List<WeaponVariantLevel> weaponVariantLevels = [];
+
+    for (int i = 0; i < levels.length; i++){
+      WeaponVariantLevel level = WeaponVariantLevel(
+        id: levels[i]["uuid"], 
+        name: levels[i]["displayName"], 
+        video: "https://media.valorant-a…bb-865f-6fa6bceeea72.mp4",
+      );
+
+      weaponVariantLevels.add(level);
+    }
 
     for (int i = 0; i < variants.length; i++){
       WeaponVariants variant = WeaponVariants(
@@ -237,7 +249,7 @@ class APIHandler{
         displayName: variants[i]["displayName"],
         swatch: variants[i]["swatch"], 
         image: variants[i]["fullRender"],
-        video: (variants[i]["streamedVideo"] == null)? "" : variants[i]["streamedVideo"] 
+        video: (variants[i]["streamedVideo"] == null)? "" : variants[i]["streamedVideo"],
       );
 
       weaponVariants.add(variant);
@@ -245,4 +257,26 @@ class APIHandler{
 
     return weaponVariants;
   }
+
+  getWeaponVariantlevels(String id) async{
+    var uri = Uri.https("valorant-api.com", "v1/weapons/skins/$id");
+    var response = await http.get(uri);
+    var json = jsonDecode(response.body);  
+
+    var levels = await json["data"]["levels"];
+
+    List<WeaponVariantLevel> weaponVariantLevels = [];
+
+    for (int i = 0; i < levels.length; i++){
+      WeaponVariantLevel level = WeaponVariantLevel(
+        id: levels[i]["uuid"], 
+        name: levels[i]["displayName"], 
+        video: (levels[i]["streamedVideo"] == null)? "" : levels[i]["streamedVideo"],
+      );
+
+      weaponVariantLevels.add(level);
+    }
+
+    return weaponVariantLevels;
+  } 
 }

@@ -24,6 +24,18 @@ class WeaponVariants{
     required this.displayName,
     required this.swatch,
     required this.image,
+    required this.video,
+  });
+}
+
+class WeaponVariantLevel{
+  final String id;
+  final String name;
+  final String video;
+
+  WeaponVariantLevel({
+    required this.id,
+    required this.name,
     required this.video
   });
 }

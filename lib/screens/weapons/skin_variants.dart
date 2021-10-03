@@ -23,12 +23,19 @@ class _SkinVariantsState extends State<SkinVariants> {
   final apiHandler = APIHandler();
   
   late List<WeaponVariants> variants;  
+  late List<WeaponVariantLevel> levels;
+
   late VideoPlayerController skinVideo;
+  late VideoPlayerController levelVideo;
 
   int selectedVariant = 0;
 
   bool loaded = false;
-  bool isSkinVideoButtonVisible= true;
+  bool isSkinVideoButtonVisible = true;
+  bool isLevelVideoButtonVisible = true;
+
+  List<String> levelsLabel = [];
+  late String levelsValue;
 
   getVariants() async{
     var temp = await apiHandler.getWeaponVariants(widget.id);
@@ -37,8 +44,20 @@ class _SkinVariantsState extends State<SkinVariants> {
       variants = temp;
     });
 
+    temp = await apiHandler.getWeaponVariantlevels(widget.id);
+
+    setState(() {
+      levels = temp;
+      for(int i = 0; i < levels.length; i++)
+        levelsLabel.add((i+1).toString());
+      levelsValue = levelsLabel[0];
+    });
+
     if(variants[selectedVariant].video != "")
       await loadGunVideo(variants[selectedVariant].video);
+
+    if(levels[0].video != "")
+      await loadSkinLevelVideo(levels[0].video);
 
     setState(() {
       loaded = true;
@@ -52,10 +71,26 @@ class _SkinVariantsState extends State<SkinVariants> {
     });
   }
 
+  loadSkinLevelVideo(String link) async{
+    levelVideo = VideoPlayerController.network(link)
+    ..initialize().then((_) {
+      setState(() {});
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     getVariants();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if(levelVideo.value.isInitialized)
+      levelVideo.dispose();
+    if(skinVideo.value.isInitialized)
+      skinVideo.dispose();
   }
 
   @override
@@ -227,6 +262,7 @@ class _SkinVariantsState extends State<SkinVariants> {
                 height: 40,
               ),
 
+              if(levels.length > 1)
               Container(
                 margin: const EdgeInsets.only(left: 20, right: 20),
                 child: const Text(
@@ -236,7 +272,122 @@ class _SkinVariantsState extends State<SkinVariants> {
                     fontFamily: 'Valorant'
                   ),
                 ),
-              )
+              ),
+
+              const SizedBox(
+                height: 10,
+              ),
+
+              if(levels.length > 1)
+              Container(
+                margin: const EdgeInsets.only(left: 20, right: 20),
+                width : width - 40,
+                child: DropdownButton(
+                  isExpanded: true,
+                  value: levelsValue,
+                  style: const TextStyle(color: Colors.deepPurple),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.deepPurpleAccent,
+                  ),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      levelsValue = newValue!;
+                    });
+                    loadSkinLevelVideo(levels[int.parse(levelsValue) - 1].video);
+                  },
+                  items: levelsLabel.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        "Level " + value,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontFamily: 'Valorant'
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                )
+              ),
+
+              const SizedBox(
+                height: 30,
+              ),
+
+              if(levels.length > 1)
+              Container(
+                margin: const EdgeInsets.only(left: 20, right: 20),
+                child: Text(
+                  levels[int.parse(levelsValue) - 1].name,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontFamily: 'Valorant'
+                  ),
+                )
+              ),
+
+              const SizedBox(
+                height: 30,
+              ),
+
+              if(levels[int.parse(levelsValue) - 1].video != "")
+              Container(
+                margin: const EdgeInsets.only(left: 20, right: 20),
+                child: Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: [
+                    Center(
+                      child: GestureDetector(
+                        onTap: (){
+                          setState(() {
+                            isLevelVideoButtonVisible = true;
+                          });
+                        },
+                        child: levelVideo.value.isInitialized? AspectRatio(
+                          aspectRatio: levelVideo.value.aspectRatio,
+                          child: VideoPlayer(levelVideo),
+                        ): const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    ),
+
+                    if(levelVideo.value.isInitialized)
+                    Center(
+                      child: GestureDetector(
+                        onTap: (){
+                        },
+                        child: Visibility(
+                          visible: isLevelVideoButtonVisible,
+                          child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                levelVideo.value.isPlaying
+                                    ? levelVideo.pause()
+                                    : levelVideo.play();
+                              });
+
+                              if(levelVideo.value.isPlaying)
+                                setState(() {
+                                  isLevelVideoButtonVisible = false;
+                                });
+                            },
+                            icon: Icon(
+                              levelVideo.value.isPlaying ? Icons.pause_circle_filled_rounded : Icons.play_circle_filled_rounded,
+                            ),
+                            iconSize: 25,
+                          )
+                        )
+                      ),
+                    )
+                  ],
+                ) 
+              ),
+
+              const SizedBox(
+                height: 40,
+              ),
             ],
           ),
         ),
