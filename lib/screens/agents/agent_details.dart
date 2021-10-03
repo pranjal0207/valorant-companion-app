@@ -77,11 +77,22 @@ class _AgentDetailsState extends State<AgentDetails> {
     );
   } 
 
+  releaseAuido() async{
+    await audioPlayer.stop();
+    await audioPlayer.release();
+  }
+
   @override
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.initState();
     getAgentData();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    releaseAuido();
   }
 
   @override
