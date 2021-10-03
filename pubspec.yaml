@@ -37,6 +37,7 @@ dependencies:
   http: ^0.13.3
   pinch_zoom: ^1.0.0
   audioplayers: ^0.20.1
+  video_player: ^2.2.5
 
 dev_dependencies:
   flutter_test:

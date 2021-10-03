@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:valorant_companion/models/weapons/weapon_skins.dart';
 import 'package:valorant_companion/utils/api_handler.dart';
+import 'package:video_player/video_player.dart';
 
 class SkinVariants extends StatefulWidget {
   final String name;
@@ -21,18 +22,33 @@ class SkinVariants extends StatefulWidget {
 class _SkinVariantsState extends State<SkinVariants> {
   final apiHandler = APIHandler();
   
-  late List<WeaponVariants> variants;
+  late List<WeaponVariants> variants;  
+  late VideoPlayerController skinVideo;
 
   int selectedVariant = 0;
 
   bool loaded = false;
+  bool isSkinVideoButtonVisible= true;
 
   getVariants() async{
     var temp = await apiHandler.getWeaponVariants(widget.id);
 
     setState(() {
       variants = temp;
+    });
+
+    if(variants[selectedVariant].video != "")
+      await loadGunVideo(variants[selectedVariant].video);
+
+    setState(() {
       loaded = true;
+    });
+  }
+
+  loadGunVideo(String link) async{
+    skinVideo = VideoPlayerController.network(link)
+    ..initialize().then((_) {
+      setState(() {});
     });
   }
 
@@ -96,17 +112,29 @@ class _SkinVariantsState extends State<SkinVariants> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     for(int i = 0; i < variants.length; i++)
-                    IconButton(
-                      onPressed: (){
-                        setState(() {
-                          selectedVariant = i;
-                        });
-                      },
-                      icon: Image.network(
-                        variants[i].swatch,
+                    Container(
+                      decoration: (selectedVariant == i)? BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white, 
+                          width: 4
+                        ) 
+                      ): null,
+                      child: IconButton(
+                        onPressed: () async{
+                          setState(() {
+                            selectedVariant = i;
+                          });
+
+                          if(variants[selectedVariant].video != "")
+                            await loadGunVideo(variants[selectedVariant].video);
+                        },
+                        icon: Image.network(
+                          variants[i].swatch,
+                        ),
+                        iconSize: 30,
+                        padding: EdgeInsets.zero
                       ),
-                      iconSize: 30
-                    ),
+                    )
                   ],
                 ),
               ),
@@ -117,6 +145,21 @@ class _SkinVariantsState extends State<SkinVariants> {
 
               Container(
                 margin: const EdgeInsets.only(left: 20, right: 20),
+                child : Text(
+                  variants[selectedVariant].displayName,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontFamily: 'Valorant'
+                  ),
+                ),
+              ),
+
+              const SizedBox(
+                height: 30,
+              ),
+
+              Container(
+                margin: const EdgeInsets.only(left: 30, right: 30),
                 child : Image.network(
                   variants[selectedVariant].image,
                 ),
@@ -126,12 +169,70 @@ class _SkinVariantsState extends State<SkinVariants> {
                 height: 30,
               ),
 
+              if(variants[selectedVariant].video != "")
               Container(
                 margin: const EdgeInsets.only(left: 20, right: 20),
-                child : Text(
-                  variants[selectedVariant].displayName,
-                  style: const TextStyle(
-                    fontSize: 18,
+                child: Stack(
+                  alignment: AlignmentDirectional.center,
+                  children: [
+                    Center(
+                      child: GestureDetector(
+                        onTap: (){
+                          setState(() {
+                            isSkinVideoButtonVisible = true;
+                          });
+                        },
+                        child: skinVideo.value.isInitialized? AspectRatio(
+                          aspectRatio: skinVideo.value.aspectRatio,
+                          child: VideoPlayer(skinVideo),
+                        ): const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    ),
+
+                    if(skinVideo.value.isInitialized)
+                    Center(
+                      child: GestureDetector(
+                        onTap: (){
+                        },
+                        child: Visibility(
+                          visible: isSkinVideoButtonVisible,
+                          child: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                skinVideo.value.isPlaying
+                                    ? skinVideo.pause()
+                                    : skinVideo.play();
+                              });
+
+                              if(skinVideo.value.isPlaying)
+                                setState(() {
+                                  isSkinVideoButtonVisible = false;
+                                });
+                            },
+                            icon: Icon(
+                              skinVideo.value.isPlaying ? Icons.pause_circle_filled_rounded : Icons.play_circle_filled_rounded,
+                            ),
+                            iconSize: 25,
+                          )
+                        )
+                      ),
+                    )
+                  ],
+                ) 
+              ),
+
+              const SizedBox(
+                height: 40,
+              ),
+
+              Container(
+                margin: const EdgeInsets.only(left: 20, right: 20),
+                child: const Text(
+                  "SKIN VARIANT LEVELS : ",
+                  style: TextStyle(
+                    fontSize: 20,
                     fontFamily: 'Valorant'
                   ),
                 ),
