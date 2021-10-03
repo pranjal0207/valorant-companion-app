@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:valorant_companion/models/weapons/weapon_data.dart';
 import 'package:valorant_companion/models/weapons/weapon_skins.dart';
+import 'package:valorant_companion/screens/weapons/skin_variants.dart';
 import 'package:valorant_companion/utils/api_handler.dart';
 
 class WeaponDetails extends StatefulWidget {
@@ -459,6 +460,7 @@ class _WeaponDetailsState extends State<WeaponDetails> {
                               onTap: (){
                                 if(skins[j].variants > 1){
                                   print(skins[j].id);
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => SkinVariants(id: skins[j].id, name: skins[j].name)));
                                 }
                               },
                               child : SkinInfoBox(

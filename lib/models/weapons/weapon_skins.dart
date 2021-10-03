@@ -15,7 +15,7 @@ class WeaponSkins{
 class WeaponVariants{
   final String id;
   final String displayName;
-  String? video;
+  final String video;
   final String swatch;
   final String image;
 
@@ -24,6 +24,6 @@ class WeaponVariants{
     required this.displayName,
     required this.swatch,
     required this.image,
-    this.video
+    required this.video
   });
 }
