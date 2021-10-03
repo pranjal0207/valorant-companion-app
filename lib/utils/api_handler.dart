@@ -8,7 +8,6 @@ import 'package:valorant_companion/models/weapons/weapon_data.dart';
 import 'package:valorant_companion/models/weapons/weapon_list_item.dart';
 
 class APIHandler{
-
   getAllAgentsData() async{
     var uri = Uri.https("valorant-api.com", "v1/agents");
     var response = await http.get(uri);
