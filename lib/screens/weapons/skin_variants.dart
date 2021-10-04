@@ -137,6 +137,7 @@ class _SkinVariantsState extends State<SkinVariants> {
                 )
               ),
 
+              if((variants[0].swatch != ""))
               const SizedBox(
                 height: 40,
               ),
@@ -148,13 +149,13 @@ class _SkinVariantsState extends State<SkinVariants> {
                   children: [
                     for(int i = 0; i < variants.length; i++)
                     Container(
-                      decoration: (selectedVariant == i)? BoxDecoration(
+                      decoration: (selectedVariant == i && (variants[i].swatch != ""))? BoxDecoration(
                         border: Border.all(
                           color: Colors.white, 
                           width: 4
                         ) 
                       ): null,
-                      child: IconButton(
+                      child:(variants[i].swatch != "")? IconButton(
                         onPressed: () async{
                           setState(() {
                             selectedVariant = i;
@@ -168,7 +169,7 @@ class _SkinVariantsState extends State<SkinVariants> {
                         ),
                         iconSize: 30,
                         padding: EdgeInsets.zero
-                      ),
+                      ) : null,
                     )
                   ],
                 ),

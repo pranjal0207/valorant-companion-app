@@ -213,7 +213,8 @@ class APIHandler{
         id: skins[i]["uuid"], 
         name: skins[i]["displayName"], 
         displayImage: skins[i]["chromas"][0]["fullRender"],
-        variants: skins[i]["chromas"].length
+        variants: skins[i]["chromas"].length,
+        levels: skins[i]["levels"].length
       );
 
       weaponSkins.add(weaponSkin);
@@ -247,7 +248,7 @@ class APIHandler{
       WeaponVariants variant = WeaponVariants(
         id: variants[i]["uuid"], 
         displayName: variants[i]["displayName"],
-        swatch: variants[i]["swatch"], 
+        swatch: (variants[i]["swatch"] == null)? "" : variants[i]["swatch"], 
         image: variants[i]["fullRender"],
         video: (variants[i]["streamedVideo"] == null)? "" : variants[i]["streamedVideo"],
       );
