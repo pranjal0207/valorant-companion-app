@@ -458,7 +458,6 @@ class _WeaponDetailsState extends State<WeaponDetails> {
                             for (int j = i; j < i+2 && j < skins.length; j++)
                             GestureDetector(
                               onTap: (){
-                                print(skins[j].id);
                                 if(skins[j].variants > 1 || skins[j].levels > 1){
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => SkinVariants(id: skins[j].id, name: skins[j].name)));
                                 }
