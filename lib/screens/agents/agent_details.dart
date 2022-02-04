@@ -36,13 +36,15 @@ class _AgentDetailsState extends State<AgentDetails> {
   void getAgentData() async{
     var temp = await apiHandler.getAgentData(widget.id);
 
+    setState(() {
+      agent = temp;
+    });
+
     await audioPlayer.setUrl(agent.voice[0].audio); // prepare the player with this audio but do not start playing
     await audioPlayer.setReleaseMode(ReleaseMode.STOP); 
     loadInitialAbilityVideo();
 
-    setState(() {
-      agent = temp;
-    });
+    
   }
 
   loadInitialAbilityVideo(){
