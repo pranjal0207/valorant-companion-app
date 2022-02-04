@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:valorant_companion/models/agents/agent_list_item.dart';
-import 'package:valorant_companion/screens/agents/agent_details.dart';
-import 'package:valorant_companion/utils/api_handler.dart';
+import '/models/agents/agent_list_item.dart';
+import '/utils/api_handler.dart';
+import '/widgets/agent_tile.dart';
 
 class AllAgents extends StatefulWidget {
   const AllAgents({ Key? key }) : super(key: key);
@@ -66,47 +66,7 @@ class _AllAgentsState extends State<AllAgents> {
                   physics: const ScrollPhysics(),
                   itemCount: agents.length,
                   itemBuilder: (context, index){
-                    return GestureDetector(
-                      onTap: (){
-                        String id = agents[index].id;
-                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AgentDetails(id: id)));
-                      },
-                      child: Container(
-                        height: 100,
-                        child: Row(
-                          children: <Widget>[
-                            Image.network(
-                              agents[index].icon,
-                              height: 50,
-                              width: 50,
-                            ),
-
-                            const SizedBox(
-                              width: 40,
-                            ),
-
-                            Expanded(
-                              child: Text(
-                                agents[index].name,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontFamily: 'Valorant'
-                                ),
-                              ),
-                            ),
-
-                            IconButton(
-                              onPressed: null,
-                              icon: Image.network(
-                                agents[index].roleIcon
-                              ),
-                              tooltip: agents[index].role,
-                            ),
-                          ],
-                        ),
-                      )
-                    );
+                    return AgentTile(agents: agents[index]);
                   }
                 ),
               ),

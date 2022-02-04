@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:valorant_companion/models/agents/agent_data.dart';
 import 'package:valorant_companion/utils/api_handler.dart';
+import 'package:valorant_companion/widgets/agent_ability_data.dart';
 
 class AgentDetails extends StatefulWidget {
   final String id;
@@ -26,6 +27,8 @@ class _AgentDetailsState extends State<AgentDetails> {
   int selectedAbility = 0;
 
   bool isPlaying = false;
+
+  List<String> abilities = ['Q', 'E', 'C', 'X'];
 
   void getAgentData() async{
     var temp = await apiHandler.getAgentData(widget.id);
@@ -69,8 +72,9 @@ class _AgentDetailsState extends State<AgentDetails> {
           content: Text(
             agent.roleDescription,
             style: const TextStyle(
-              color: Colors.white
+              color: Colors.white,
             ),
+            textAlign: TextAlign.justify,
           ),
         );
       }
@@ -215,123 +219,34 @@ class _AgentDetailsState extends State<AgentDetails> {
                         child: Row(
                           mainAxisAlignment : MainAxisAlignment.spaceBetween,
                           children: <Widget>[
+                            for(int i = 0; i < abilities.length; i++)
                             TextButton(
                               onPressed: (){
                                 setState(() {
-                                  selectedAbility = 0;
+                                  selectedAbility = i;
                                 });
                               },
-                              child: const Text(
-                                "Q",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontFamily: 'Valorant'
-                                ),
-                              ),
-                              style: TextButton.styleFrom(
-                                fixedSize: Size(((width - 20 - 15)/4), 20),
-                                backgroundColor: (selectedAbility == 0)? Colors.grey: null
-                              ),
-                            ),
-
-                            TextButton(
-                              onPressed: (){
-                                setState(() {
-                                  selectedAbility = 1;
-                                });
-                              },
-                              child: const Text(
-                                "E",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontFamily: 'Valorant'
-                                ),
-                              ),
-                              style: TextButton.styleFrom(
-                                fixedSize: Size(((width - 20 - 15)/4), 20),
-                                backgroundColor: (selectedAbility == 1)? Colors.grey: null,
-                              ),
-                            ),
-
-                            TextButton(
-                              onPressed: (){
-                                setState(() {
-                                  selectedAbility = 2;
-                                });
-                              },
-                              child: const Text(
-                                "C",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontFamily: 'Valorant'
-                                ),
-                              ),
-                              style: TextButton.styleFrom(
-                                fixedSize: Size(((width - 20 - 15)/4), 20),
-                                backgroundColor: (selectedAbility == 2)? Colors.grey: null
-                              ),
-                            ),
-
-                            TextButton(
-                              onPressed: (){
-                                setState(() {
-                                  selectedAbility = 3;
-                                });
-                              },
-                              child: const Text(
-                                "X",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontFamily: 'Valorant'
-                                ),
-                              ),
-                              style: TextButton.styleFrom(
-                                fixedSize: Size(((width - 20 - 15)/4), 20),
-                                backgroundColor: (selectedAbility == 3)? Colors.grey : null
-                              ),
-                            ),
-                          ],
-                        )
-                      ),
-
-                      Container(
-                        margin: const EdgeInsets.only(left : 15, right: 15, top: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Image.network(
-                              agent.abilities[selectedAbility].icon,
-                              width: 40
-                            ),
-
-                            Container(
-                              width: width - 100,
                               child: Text(
-                                agent.abilities[selectedAbility].name,
+                                abilities[i],
                                 style: const TextStyle(
                                   color: Colors.white,
-                                  fontSize: 20,
+                                  fontSize: 16,
                                   fontFamily: 'Valorant'
                                 ),
                               ),
-                            )
+                              style: TextButton.styleFrom(
+                                fixedSize: Size(((width - 20 - 15)/4), 20),
+                                backgroundColor: (selectedAbility == i)? Colors.grey: null
+                              ),
+                            ),
                           ],
                         )
                       ),
 
-                      Container(
-                        margin: const EdgeInsets.only(left : 15, right: 15, top: 20),
-                        child: Text(
-                          agent.abilities[selectedAbility].description,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                          ),
-                        ),
+                      AgentAbilityData(
+                        abilityIcon: agent.abilities[selectedAbility].icon, 
+                        abilityName: agent.abilities[selectedAbility].name,
+                        abilityData: agent.abilities[selectedAbility].description
                       ),
 
                       Container(

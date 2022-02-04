@@ -17,7 +17,8 @@ class APIHandler{
     List<AgentListItem> agents = [];
 
     for(int i = 0; i < json["data"].length; i++) {
-      if(i == 5){
+      print (i);
+      if(i == 6){
         continue;
       }
 
