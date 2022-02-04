@@ -26,11 +26,9 @@ class _AgentDetailsState extends State<AgentDetails> {
   late AgentData agent;
 
   bool loading = true;
-
-  int selectedAbility = 0;
-
   bool isPlaying = false;
 
+  int selectedAbility = 0;
   List<String> abilities = ['Q', 'E', 'C', 'X'];
 
   late VideoPlayerController abilityVideo;
