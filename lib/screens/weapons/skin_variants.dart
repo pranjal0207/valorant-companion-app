@@ -46,16 +46,19 @@ class _SkinVariantsState extends State<SkinVariants> {
 
     setState(() {
       levels = temp;
-      for(int i = 0; i < levels.length; i++)
+      for(int i = 0; i < levels.length; i++) {
         levelsLabel.add((i+1).toString());
+      }
       levelsValue = levelsLabel[0];
     });
 
-    if(variants[selectedVariant].video != "")
+    if(variants[selectedVariant].video != "") {
       await loadGunVideo(variants[selectedVariant].video);
+    }
 
-    if(levels[0].video != "")
+    if(levels[0].video != "") {
       await loadSkinLevelVideo(levels[0].video);
+    }
 
     setState(() {
       loaded = true;
@@ -85,18 +88,20 @@ class _SkinVariantsState extends State<SkinVariants> {
   @override
   void dispose() {
     super.dispose();
-    if(levelVideo.value.isInitialized)
+    if(levelVideo.value.isInitialized) {
       levelVideo.dispose();
-    if(skinVideo.value.isInitialized)
+    }
+    if(skinVideo.value.isInitialized) {
       skinVideo.dispose();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
    
-    if(loaded)
-    return Scaffold(
+    if(loaded) {
+      return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -159,8 +164,9 @@ class _SkinVariantsState extends State<SkinVariants> {
                             selectedVariant = i;
                           });
 
-                          if(variants[selectedVariant].video != "")
+                          if(variants[selectedVariant].video != "") {
                             await loadGunVideo(variants[selectedVariant].video);
+                          }
                         },
                         icon: Image.network(
                           variants[i].swatch,
@@ -240,10 +246,11 @@ class _SkinVariantsState extends State<SkinVariants> {
                                     : skinVideo.play();
                               });
 
-                              if(skinVideo.value.isPlaying)
+                              if(skinVideo.value.isPlaying) {
                                 setState(() {
                                   isSkinVideoButtonVisible = false;
                                 });
+                              }
                             },
                             icon: Icon(
                               skinVideo.value.isPlaying ? Icons.pause_circle_filled_rounded : Icons.play_circle_filled_rounded,
@@ -367,10 +374,11 @@ class _SkinVariantsState extends State<SkinVariants> {
                                     : levelVideo.play();
                               });
 
-                              if(levelVideo.value.isPlaying)
+                              if(levelVideo.value.isPlaying) {
                                 setState(() {
                                   isLevelVideoButtonVisible = false;
                                 });
+                              }
                             },
                             icon: Icon(
                               levelVideo.value.isPlaying ? Icons.pause_circle_filled_rounded : Icons.play_circle_filled_rounded,
@@ -392,6 +400,7 @@ class _SkinVariantsState extends State<SkinVariants> {
         ),
       ),
     );
+    }
 
     return const Scaffold(
       body: Center(
