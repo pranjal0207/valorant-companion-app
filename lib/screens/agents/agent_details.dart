@@ -42,14 +42,15 @@ class _AgentDetailsState extends State<AgentDetails> {
 
     setState(() {
       agent = temp;
-      loading = false;
     });
   }
 
   loadInitialAbilityVideo(){
     abilityVideo = VideoPlayerController.network(agentMedia[agent.name]![0]!)
       ..initialize().then((_) {
-        setState(() {});
+        setState(() {
+          loading = false;
+        });
     });
   }
 
