@@ -1,9 +1,12 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:valorant_companion/models/agents/agent_data.dart';
-import 'package:valorant_companion/utils/api_handler.dart';
-import 'package:valorant_companion/widgets/agent_ability_data.dart';
+import '../../models/agents/agent_data.dart';
+import '../../utils/api_handler.dart';
+import '../../widgets/agent_ability_data.dart';
+import 'package:video_player/video_player.dart';
+import '../../models/agent_media.dart';
 
 class AgentDetails extends StatefulWidget {
   final String id;
@@ -30,6 +33,8 @@ class _AgentDetailsState extends State<AgentDetails> {
 
   List<String> abilities = ['Q', 'E', 'C', 'X'];
 
+  late VideoPlayerController abilityVideo;
+
   void getAgentData() async{
     var temp = await apiHandler.getAgentData(widget.id);
 
@@ -40,6 +45,14 @@ class _AgentDetailsState extends State<AgentDetails> {
 
     await audioPlayer.setUrl(agent.voice[0].audio); // prepare the player with this audio but do not start playing
     await audioPlayer.setReleaseMode(ReleaseMode.STOP); 
+    loadInitialAbilityVideo();
+  }
+
+  loadInitialAbilityVideo(){
+    abilityVideo = VideoPlayerController.network(agentMedia[agent.name]![0]!)
+      ..initialize().then((_) {
+        setState(() {});
+    });
   }
 
   showRoleData() {
@@ -138,10 +151,10 @@ class _AgentDetailsState extends State<AgentDetails> {
                         children: <Widget>[
                           Container(
                             margin: const EdgeInsets.only(left: 15),
-                            child: Image.network(
-                              agent.image,
+                            child: CachedNetworkImage(
+                              imageUrl : agent.image,
                               height: 150,
-                              scale: 1,
+                              placeholder: (context, url) => const CircularProgressIndicator(),
                             ),
                           ),
 
@@ -210,47 +223,8 @@ class _AgentDetailsState extends State<AgentDetails> {
                         ),
                       ),
 
-                      const SizedBox(
-                        height: 20,
-                      ),
-
                       Container(
-                        margin: const EdgeInsets.only(left: 10, right: 10),
-                        child: Row(
-                          mainAxisAlignment : MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            for(int i = 0; i < abilities.length; i++)
-                            TextButton(
-                              onPressed: (){
-                                setState(() {
-                                  selectedAbility = i;
-                                });
-                              },
-                              child: Text(
-                                abilities[i],
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontFamily: 'Valorant'
-                                ),
-                              ),
-                              style: TextButton.styleFrom(
-                                fixedSize: Size(((width - 20 - 15)/4), 20),
-                                backgroundColor: (selectedAbility == i)? Colors.grey: null
-                              ),
-                            ),
-                          ],
-                        )
-                      ),
-
-                      AgentAbilityData(
-                        abilityIcon: agent.abilities[selectedAbility].icon, 
-                        abilityName: agent.abilities[selectedAbility].name,
-                        abilityData: agent.abilities[selectedAbility].description
-                      ),
-
-                      Container(
-                        margin: const EdgeInsets.only(left : 15, right: 15, top: 40),
+                        margin: const EdgeInsets.only(left : 15, right: 15, top: 10),
                         child: Row(
                           children: <Widget>[
                             const Text(
@@ -287,7 +261,50 @@ class _AgentDetailsState extends State<AgentDetails> {
                             ),
                           ],
                         )
-                      )
+                      ),
+
+                      const SizedBox(
+                        height: 20,
+                      ),
+
+                      Container(
+                        margin: const EdgeInsets.only(left: 10, right: 10),
+                        child: Row(
+                          mainAxisAlignment : MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            for(int i = 0; i < abilities.length; i++)
+                            TextButton(
+                              onPressed: () async{
+                                abilityVideo = VideoPlayerController.network(agentMedia[agent.name]![i]!)
+                                  ..initialize().then((_) {
+                                    setState(() {
+                                      selectedAbility = i;
+                                    });
+                                });
+                              },
+                              child: Text(
+                                abilities[i],
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: 'Valorant'
+                                ),
+                              ),
+                              style: TextButton.styleFrom(
+                                fixedSize: Size(((width - 20 - 15)/4), 20),
+                                backgroundColor: (selectedAbility == i)? Colors.grey: null
+                              ),
+                            ),
+                          ],
+                        )
+                      ),
+
+                      AgentAbilityData(
+                        abilityIcon: agent.abilities[selectedAbility].icon, 
+                        abilityName: agent.abilities[selectedAbility].name,
+                        abilityData: agent.abilities[selectedAbility].description,
+                        abilityVideoCon: abilityVideo,
+                      ),
                     ],
                   )
               )
