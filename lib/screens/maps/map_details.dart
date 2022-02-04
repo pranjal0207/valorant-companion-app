@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pinch_zoom/pinch_zoom.dart';
-import 'package:valorant_companion/models/maps/map_data.dart';
-import 'package:valorant_companion/utils/api_handler.dart';
+import '../../models/maps/map_data.dart';
+import '../../utils/api_handler.dart';
 
 class MapDetails extends StatefulWidget {
   final String id;

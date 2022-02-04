@@ -1,11 +1,11 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../models/agents/agent_data.dart';
 import '../../utils/api_handler.dart';
 import '../../widgets/agent_ability_data.dart';
-import 'package:video_player/video_player.dart';
 import '../../models/agent_media.dart';
 
 class AgentDetails extends StatefulWidget {

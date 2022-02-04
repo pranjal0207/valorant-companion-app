@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:valorant_companion/screens/landing_screen.dart';
+import 'screens/landing_screen.dart';
 
 void main() {
   runApp(const MyApp());

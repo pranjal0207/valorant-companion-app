@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:valorant_companion/models/weapons/weapon_list_item.dart';
-import 'package:valorant_companion/screens/weapons/weapon_details.dart';
-import 'package:valorant_companion/utils/api_handler.dart';
+import '../../models/weapons/weapon_list_item.dart';
+import '../../utils/api_handler.dart';
+import 'weapon_details.dart';
 
 class AllWeapons extends StatefulWidget {
   const AllWeapons({ Key? key }) : super(key: key);

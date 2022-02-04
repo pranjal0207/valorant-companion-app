@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:valorant_companion/models/agents/agent_data.dart';
-import 'package:valorant_companion/models/agents/agent_list_item.dart';
-import 'package:valorant_companion/models/maps/map_data.dart';
-import 'package:valorant_companion/models/maps/map_list_item.dart';
-import 'package:valorant_companion/models/weapons/weapon_data.dart';
-import 'package:valorant_companion/models/weapons/weapon_list_item.dart';
-import 'package:valorant_companion/models/weapons/weapon_skins.dart';
+import '../models/agents/agent_data.dart';
+import '../models/agents/agent_list_item.dart';
+import '../models/maps/map_data.dart';
+import '../models/maps/map_list_item.dart';
+import '../models/weapons/weapon_data.dart';
+import '../models/weapons/weapon_list_item.dart';
+import '../models/weapons/weapon_skins.dart';
 
 class APIHandler{
   getAllAgentsData() async{
@@ -17,7 +17,6 @@ class APIHandler{
     List<AgentListItem> agents = [];
 
     for(int i = 0; i < json["data"].length; i++) {
-      print (i);
       if(i == 6){
         continue;
       }

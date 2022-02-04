@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:valorant_companion/screens/agents/all_agents.dart';
-import 'package:valorant_companion/screens/maps/all_maps.dart';
-import 'package:valorant_companion/screens/weapons/all_weapons.dart';
+import 'agents/all_agents.dart';
+import 'maps/all_maps.dart';
+import 'weapons/all_weapons.dart';
 
 class LandingScreen extends StatefulWidget {
   const LandingScreen({ Key? key }) : super(key: key);

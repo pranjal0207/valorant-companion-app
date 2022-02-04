@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:valorant_companion/models/maps/map_list_item.dart';
-import 'package:valorant_companion/screens/maps/map_details.dart';
-import 'package:valorant_companion/utils/api_handler.dart';
+import '../../models/maps/map_list_item.dart';
+import '../../utils/api_handler.dart';
+import 'map_details.dart';
 
 class AllMaps extends StatefulWidget {
   const AllMaps({ Key? key }) : super(key: key);

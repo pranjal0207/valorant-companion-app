@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:valorant_companion/models/weapons/weapon_data.dart';
-import 'package:valorant_companion/models/weapons/weapon_skins.dart';
-import 'package:valorant_companion/screens/weapons/skin_variants.dart';
-import 'package:valorant_companion/utils/api_handler.dart';
+import '../../models/weapons/weapon_data.dart';
+import '../../models/weapons/weapon_skins.dart';
+import '../../utils/api_handler.dart';
+import 'skin_variants.dart';
 
 class WeaponDetails extends StatefulWidget {
   final String id;

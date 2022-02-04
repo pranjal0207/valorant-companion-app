@@ -1,9 +1,7 @@
-// ignore_for_file: curly_braces_in_flow_control_structures
-
 import 'package:flutter/material.dart';
-import 'package:valorant_companion/models/weapons/weapon_skins.dart';
-import 'package:valorant_companion/utils/api_handler.dart';
 import 'package:video_player/video_player.dart';
+import '../../models/weapons/weapon_skins.dart';
+import '../../utils/api_handler.dart';
 
 class SkinVariants extends StatefulWidget {
   final String name;
