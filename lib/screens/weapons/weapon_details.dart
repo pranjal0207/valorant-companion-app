@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import '../../models/weapons/weapon_data.dart';
 import '../../models/weapons/weapon_skins.dart';
 import '../../utils/api_handler.dart';
+import '../../widgets/weapon_skin_item_box.dart';
+import '../../widgets/weapon_stats_box.dart';
 import 'skin_variants.dart';
 
 class WeaponDetails extends StatefulWidget {
@@ -21,6 +23,7 @@ class _WeaponDetailsState extends State<WeaponDetails> {
   
   late WeaponData weapon;
   late List<WeaponSkins> skins;
+  List<String> weaponRangeRows = ["", "Head", "Body", "Legs"];
 
   bool loading = true;
   bool skinLoading = true;
@@ -168,13 +171,13 @@ class _WeaponDetailsState extends State<WeaponDetails> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            StatBox(
+                            WeaponStatsBox(
                               title: "FIRE RATE", 
                               data: weapon.fireRate.toString(), 
                               unit: "RDS/SEC"
                             ),
 
-                            StatBox(
+                            WeaponStatsBox(
                               title: "RUN SPEED", 
                               data: (weapon.runSpeed * 6.75).toStringAsFixed(2), 
                               unit: "M/SEC"
@@ -188,13 +191,13 @@ class _WeaponDetailsState extends State<WeaponDetails> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            StatBox(
+                            WeaponStatsBox(
                               title: "EQUIP SPEED", 
                               data: weapon.equipSpeed.toString(), 
                               unit: "SEC"
                             ),
 
-                            StatBox(
+                            WeaponStatsBox(
                               title: "1ST SHOT SPREAD", 
                               data: weapon.firstShotSpreadHIP.toStringAsFixed(2) + " / " + weapon.firstShotSpreadADS.toStringAsFixed(2), 
                               unit: "DEG (HIP/ADS)"
@@ -208,13 +211,13 @@ class _WeaponDetailsState extends State<WeaponDetails> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            StatBox(
+                            WeaponStatsBox(
                               title: "RELOAD SPEED", 
                               data: weapon.reloadSpeed.toString(), 
                               unit: "SEC"
                             ),
 
-                            StatBox(
+                            WeaponStatsBox(
                               title: "MAGAZINE", 
                               data: weapon.magazine.toString(), 
                               unit: "RDS"
@@ -448,17 +451,22 @@ class _WeaponDetailsState extends State<WeaponDetails> {
                       ),
 
                       if(!skinLoading)
-                      for (int i = 0; i < skins.length; i = i + 2)
                       Container(
-                        margin : const EdgeInsets.only(left : 20, right : 20, bottom: 20),
-                        child : Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            for (int j = i; j < i+2 && j < skins.length; j++)
-                            GestureDetector(
+                        margin: const EdgeInsets.only(left : 20, right: 20),
+                        child: GridView.builder(
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 20
+                          ),
+                          itemCount: skins.length,
+                          physics: const ScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (BuildContext context, int index){
+                            return GestureDetector(
                               onTap: (){
-                                if(skins[j].variants > 1 || skins[j].levels > 1){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => SkinVariants(id: skins[j].id, name: skins[j].name)));
+                                if(skins[index].variants > 1 || skins[index].levels > 1){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => SkinVariants(id: skins[index].id, name: skins[index].name)));
                                 }
 
                                 else{
@@ -476,11 +484,11 @@ class _WeaponDetailsState extends State<WeaponDetails> {
                                   );
                                 }
                               },
-                              child : SkinInfoBox(
-                                skin: skins[j]
+                              child : WeaponSkinItemBox(
+                                skin: skins[index]
                               )
-                            )
-                          ],
+                            );
+                          }
                         ),
                       ),
 
@@ -498,113 +506,5 @@ class _WeaponDetailsState extends State<WeaponDetails> {
   }
 }
 
-class StatBox extends StatelessWidget {
-  final String title;
-  final String data;
-  final String unit;
 
-  const StatBox({ 
-    required this.title,
-    required this.data,
-    required this.unit,
-    Key? key 
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-
-    return Container(
-      padding: const EdgeInsets.only(top : 10, bottom : 10),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.white)
-      ),
-      width: (width - 50)/2,
-      child: Column(
-        children: <Widget>[
-          Text(
-            title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 14
-            ),
-          ),
-
-          const SizedBox(
-            height: 5,
-          ),
-
-          Text(
-            data,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 19
-            ),
-          ),
-
-          const SizedBox(
-            height: 5,
-          ),
-
-          Text(
-            unit,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 14
-            ),
-          ),
-        ]
-      ),
-    );
-  }
-}
-
-class SkinInfoBox extends StatelessWidget {
-  final WeaponSkins skin;
-  const SkinInfoBox({ 
-    required this.skin,
-    Key? key 
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-
-    return Container(
-        padding: const EdgeInsets.only(top : 20, bottom : 20, left : 10, right : 10),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.white)
-        ),
-        height: 182,
-        width: (width - 50)/2,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            Text(
-              skin.name,
-              style: const TextStyle(
-                fontFamily: 'Valorant'
-              )
-            ),
-
-            const SizedBox(
-              height: 20,
-            ),
-
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Image.network(
-                    skin.displayImage,
-                    height: 60
-                  ),
-                ],
-              )
-            )
-            
-          ],
-        ),
-      );
-  }
-}
