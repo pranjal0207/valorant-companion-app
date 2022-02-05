@@ -16,8 +16,12 @@ class _AllAgentsState extends State<AllAgents> {
 
   List<AgentListItem> agents = [];
 
-  void getAgents() async{
-    var temp = await apiHandler.getAllAgentsData();
+  List<String> agentRoles = ["All Agents", "Initiator", "Duelist", "Controller", "Sentinel"];
+  String currentRole = "All Agents";
+  int currentRoleIndex = 0;
+
+  void getAgents(int index) async{
+    var temp = await apiHandler.getAllAgentsData(agentRoles[index]);
 
     setState(() {
       agents = temp;
@@ -28,7 +32,7 @@ class _AllAgentsState extends State<AllAgents> {
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.initState();
-    getAgents();
+    getAgents(0);
   }
 
   @override
@@ -45,13 +49,48 @@ class _AllAgentsState extends State<AllAgents> {
 
               Container(
                 margin: const EdgeInsets.only(left : 25, right: 20),
-                child : const Text(
-                  "AGENTS",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 35,
-                    fontFamily: 'Valorant'
-                  ),
+                child : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    const Text(
+                      "AGENTS",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 35,
+                        fontFamily: 'Valorant'
+                      ),
+                    ),
+
+                    DropdownButton(
+                      //isExpanded: true,
+                      value: currentRole,
+                      style: const TextStyle(color: Colors.deepPurple),
+                      underline: Container(
+                        height: 2,
+                        color: Colors.deepPurpleAccent,
+                      ),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          currentRole = newValue!;
+                          currentRoleIndex = agentRoles.indexOf(newValue);
+                        });
+                        getAgents(currentRoleIndex);
+                      },
+                      items: agentRoles.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Valorant'
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    )
+                  ],
                 )
               ),
 

@@ -122,7 +122,7 @@ class _WeaponDetailsState extends State<WeaponDetails> {
                                       Text(
                                         "(" + weapon.category + ")",
                                         style: const TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 14,
                                           color: Colors.white
                                         ),
                                       ),

@@ -9,7 +9,7 @@ import '../models/weapons/weapon_list_item.dart';
 import '../models/weapons/weapon_skins.dart';
 
 class APIHandler{
-  getAllAgentsData() async{
+  getAllAgentsData(String selectedRole) async{
     var uri = Uri.https("valorant-api.com", "v1/agents");
     var response = await http.get(uri);
     var json = jsonDecode(response.body);  
@@ -28,9 +28,19 @@ class APIHandler{
         role: json["data"][i]['role']['displayName'],
         roleIcon: json["data"][i]['role']['displayIcon']
       );
+      
+      if(selectedRole == "All Agents") {
+        agents.add(agent);
+      }
 
-      agents.add(agent);
+      else{
+        if(agent.role.toLowerCase() == selectedRole.toLowerCase()) {
+          agents.add(agent);
+        }
+      }
     }
+
+    agents.sort(((a, b) => a.role.compareTo(b.role)));
 
     return agents;
   }
