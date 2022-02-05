@@ -16,8 +16,12 @@ class _AllWeaponsState extends State<AllWeapons> {
 
   List<WeapontListItem> weapons = [];
 
-  void getWeapons() async{
-    var temp = await apiHandler.getAllWeapons();
+  List<String> weaponCategory = ["All Weapons", "Pistols", "Shotguns", "Rifles", "Sniper Rifles", "Heavy Weapons"];
+  String currentCategory = "All Weapons";
+  int currentCategoryIndex = 0;
+
+  void getWeapons(int index) async{
+    var temp = await apiHandler.getAllWeapons(weaponCategory[index]);
 
     setState(() {
       weapons = temp;
@@ -28,7 +32,7 @@ class _AllWeaponsState extends State<AllWeapons> {
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     super.initState();
-    getWeapons();
+    getWeapons(0);
   }
 
   @override
@@ -45,13 +49,48 @@ class _AllWeaponsState extends State<AllWeapons> {
 
               Container(
                 margin: const EdgeInsets.only(left : 25, right: 20),
-                child : const Text(
-                  "ARSENAL",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 35,
-                    fontFamily: 'Valorant'
-                  ),
+                child : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    const Text(
+                      "ARSENAL",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 35,
+                        fontFamily: 'Valorant'
+                      ),
+                    ),
+
+                    DropdownButton(
+                      //isExpanded: true,
+                      value: currentCategory,
+                      style: const TextStyle(color: Colors.deepPurple),
+                      underline: Container(
+                        height: 2,
+                        color: Colors.deepPurpleAccent,
+                      ),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          currentCategory = newValue!;
+                          currentCategoryIndex = weaponCategory.indexOf(newValue);
+                        });
+                        getWeapons(currentCategoryIndex);
+                      },
+                      items: weaponCategory.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Valorant'
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    )
+                  ],
                 )
               ),
 

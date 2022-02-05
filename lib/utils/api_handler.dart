@@ -93,7 +93,7 @@ class APIHandler{
     return agent;
   }
 
-  getAllWeapons() async{
+  getAllWeapons(String currentCategory) async{
     var uri = Uri.https("valorant-api.com", "v1/weapons");
     var response = await http.get(uri);
     var json = jsonDecode(response.body); 
@@ -102,15 +102,26 @@ class APIHandler{
 
     List<WeapontListItem> weapons = [];
 
-    for(int i = 0; i < data.length; i++){
+    for(int i = 0; i < data.length - 1; i++){
       WeapontListItem weapon = WeapontListItem(
         name: data[i]["displayName"], 
         icon: data[i]["displayIcon"], 
-        id: data[i]["uuid"]
+        id: data[i]["uuid"],
+        category: data[i]["shopData"]["category"]
       );
 
-      weapons.add(weapon);
+      if(currentCategory== "All Weapons") {
+        weapons.add(weapon);
+      }
+
+      else{
+        if(weapon.category.toLowerCase() == currentCategory.toLowerCase()) {
+          weapons.add(weapon);
+        }
+      }
     }
+
+    weapons.sort(((a, b) => a.category.compareTo(b.category)));
 
     return weapons;
   }
