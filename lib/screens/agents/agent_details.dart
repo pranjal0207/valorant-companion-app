@@ -4,12 +4,13 @@ import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../models/agents/agent_data.dart';
+import '../../models/agent_media.dart';
 import '../../utils/api_handler.dart';
 import '../../widgets/agent_ability_data.dart';
-import '../../models/agent_media.dart';
 
 class AgentDetails extends StatefulWidget {
   final String id;
+  
   const AgentDetails({
     required this.id,
     Key? key 
@@ -40,11 +41,9 @@ class _AgentDetailsState extends State<AgentDetails> {
       agent = temp;
     });
 
-    await audioPlayer.setUrl(agent.voice[0].audio); // prepare the player with this audio but do not start playing
+    await audioPlayer.setUrl(agent.voice[0].audio);
     await audioPlayer.setReleaseMode(ReleaseMode.STOP); 
     loadInitialAbilityVideo();
-
-    
   }
 
   loadInitialAbilityVideo(){

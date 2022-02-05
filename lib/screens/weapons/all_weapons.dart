@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:valorant_companion/widgets/weapon_tile.dart';
 import '../../models/weapons/weapon_list_item.dart';
 import '../../utils/api_handler.dart';
-import 'weapon_details.dart';
 
 class AllWeapons extends StatefulWidget {
   const AllWeapons({ Key? key }) : super(key: key);
@@ -66,48 +66,7 @@ class _AllWeaponsState extends State<AllWeapons> {
                   physics: const ScrollPhysics(),
                   itemCount: weapons.length,
                   itemBuilder: (context, index){
-                    return GestureDetector(
-                      onTap: (){
-                        String id = weapons[index].id;
-                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => WeaponDetails(id: id)));
-                      },
-                      child: Container(
-                        height: 100,
-                        child: Row(
-                          children: <Widget>[
-                            Image.network(
-                              weapons[index].icon,
-                              height: 90,
-                              width: 100,
-                            ),
-
-                            const SizedBox(
-                              width: 40,
-                            ),
-
-                            Expanded(
-                              child: Text(
-                                weapons[index].name,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontFamily: 'Valorant'
-                                ),
-                              ),
-                            ),
-
-                            if(weapons[index].id != "2f59173c-4bed-b6c3-2191-dea9b58be9c7")
-                            IconButton(
-                              onPressed: () {
-                                String id = weapons[index].id;
-                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => WeaponDetails(id: id)));
-                              },
-                              icon: const Icon(Icons.arrow_forward_ios)
-                            ),
-                          ],
-                        ),
-                      )
-                    );
+                    return WeaponTile(weapons: weapons[index]);
                   }
                 ),
               ),

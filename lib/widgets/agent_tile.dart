@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../models/agents/agent_list_item.dart';
 import '../screens/agents/agent_details.dart';
@@ -20,8 +21,8 @@ class AgentTile extends StatelessWidget {
         height: 100,
         child: Row(
           children: <Widget>[
-            Image.network(
-              agents.icon,
+            CachedNetworkImage(
+              imageUrl: agents.icon,
               height: 50,
               width: 50,
             ),
